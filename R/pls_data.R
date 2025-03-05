@@ -210,13 +210,12 @@ make_pls_plsr <- function() {
     type = "numeric",
     value = list(
       pre = NULL,
-      post = single_numeric_preds,
+      post = single_numeric_preds_plsr,
       func = c(fun = "predict"),
       args =
         list(
           object = quote(object$fit),
-          newdata = quote(new_data),
-          dist = "mahalanobis.dist"
+          newdata = quote(new_data)
         )
     )
   )
@@ -233,9 +232,7 @@ make_pls_plsr <- function() {
       args =
         list(
           object = quote(object$fit),
-          newdata = quote(new_data),
-          # TODO: Remove this when you're sure it won't break functions that work across mixOmics and plsr
-          dist = "mahalanobis.dist"
+          newdata = quote(new_data)
         )
     )
   )

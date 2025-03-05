@@ -15,6 +15,23 @@ single_numeric_preds <- function(results, object) {
   res
 }
 
+# Alternate version for plsr because it returns predictions directly
+# not in a list with other components bundled in
+single_numeric_preds_plsr <- function(results, object) {
+  tmp_pred <- results
+  n <- dim(tmp_pred)[1]
+  p <- dim(tmp_pred)[2]
+  ncomp <- dim(tmp_pred)[3]
+  tmp_pred <- tmp_pred[, , ncomp]
+  if (p == 1) {
+    res <- tibble::tibble(.pred = unname(tmp_pred))
+  } else {
+    res <- tibble::as_tibble(tmp_pred)
+    names(res) <- paste0(".pred_", names(res))
+  }
+  res
+}
+
 # ------------------------------------------------------------------------------
 
 single_class_preds <- function(results, object) {
