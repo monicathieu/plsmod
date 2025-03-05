@@ -79,6 +79,7 @@ s3_register <- function(generic, class, method = NULL) {
 .onLoad <- function(libname, pkgname) {
   # This defines pls in the model database
   make_pls_mixOmics()
+  make_pls_plsr()
   # lazily register multipredict methods
   s3_register("parsnip::multi_predict", "_mixo_pls")
   s3_register("parsnip::multi_predict", "_mixo_plsda")

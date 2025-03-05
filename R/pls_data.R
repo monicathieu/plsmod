@@ -163,4 +163,82 @@ make_pls_mixOmics <- function() {
   )
 }
 
+# ------------------------------------------------------------------------------
+
+make_pls_plsr <- function() {
+  parsnip::set_model_engine("pls", "regression", "plsr")
+  parsnip::set_dependency("pls", "plsr", "pls", "regression")
+  parsnip::set_dependency("pls", "plsr", "plsmod", "regression")
+
+  parsnip::set_model_arg(
+    model = "pls",
+    eng = "plsr",
+    parsnip = "num_comp",
+    original = "ncomp",
+    func = list(pkg = "dials", fun = "num_comp", range = c(1, 4)),
+    has_submodel = TRUE
+  )
+
+  parsnip::set_fit(
+    model = "pls",
+    eng = "plsr",
+    mode = "regression",
+    value = list(
+      interface = "matrix",
+      protect = c("x", "y"),
+      func = c(pkg = "plsmod", fun = "plsr_fit"),
+      defaults = list(validation = "none")
+    )
+  )
+
+  parsnip::set_encoding(
+    model = "pls",
+    eng = "plsr",
+    mode = "regression",
+    options = list(
+      predictor_indicators = "traditional",
+      compute_intercept = TRUE,
+      remove_intercept = TRUE,
+      allow_sparse_x = FALSE
+    )
+  )
+
+  parsnip::set_pred(
+    model = "pls",
+    eng = "plsr",
+    mode = "regression",
+    type = "numeric",
+    value = list(
+      pre = NULL,
+      post = single_numeric_preds,
+      func = c(fun = "predict"),
+      args =
+        list(
+          object = quote(object$fit),
+          newdata = quote(new_data),
+          dist = "mahalanobis.dist"
+        )
+    )
+  )
+
+  parsnip::set_pred(
+    model = "pls",
+    eng = "plsr",
+    mode = "regression",
+    type = "raw",
+    value = list(
+      pre = NULL,
+      post = NULL,
+      func = c(fun = "predict"),
+      args =
+        list(
+          object = quote(object$fit),
+          newdata = quote(new_data),
+          # TODO: Remove this when you're sure it won't break functions that work across mixOmics and plsr
+          dist = "mahalanobis.dist"
+        )
+    )
+  )
+}
+
 # nocov end

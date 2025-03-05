@@ -6,7 +6,7 @@
 \alias{plsmod-package}
 \title{plsmod: Model Wrappers for Projection Methods}
 \description{
-Bindings for additional regression models for use with the 'parsnip' package, including ordinary and spare partial least squares models for regression and classification (Rohart et al (2017) \doi{10.1371/journal.pcbi.1005752}).
+Bindings for additional regression models for use with the 'parsnip' package, including ordinary and spare partial least squares models for regression and classification (Rohart et al (2017); Mevik and Wehrens (2007)) \doi{10.1371/journal.pcbi.1005752}).
 }
 \seealso{
 Useful links:

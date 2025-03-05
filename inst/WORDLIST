@@ -1,11 +1,13 @@
 CMD
 Codecov
 Lifecycle
+Mevik
 ORCID
 PBC
 RStudio
 Rohart
 Tecator
+Wehrens
 al
 doi
 et
@@ -15,6 +17,7 @@ mixOmics
 modeldata
 pcbi
 pls
+preprocesses
 psock
 reprex
 spls
