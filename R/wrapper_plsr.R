@@ -19,12 +19,11 @@ plsr_fit <- function(x, y, ncomp = NULL, ...) {
   if (!is.matrix(y)) {
     y <- as.matrix(y)
   }
-  px <- ncol(x)
-  py <- ncol(y)
+  p <- ncol(x)
   if (is.null(ncomp)) {
-    ncomp <- min(px, py)
+    ncomp <- p
   } else {
-    ncomp <- min(ncomp, px, py)
+    ncomp <- min(ncomp, p)
   }
 
   res <- pls::plsr(y ~ x, ncomp = ncomp, ...)
