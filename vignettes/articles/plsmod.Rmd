@@ -22,13 +22,15 @@ data(meats, package = "modeldata")
 
 Note that using `tidymodels_prefer()` will resulting getting `parsnip::pls()` instead of `mixOmics::pls()` when simply running `pls()`.
 
-Although plsmod can fit multivariate models, we'll concentration on a univariate model that predicts the percentage of protein in the samples.  
+Although plsmod can fit multivariate models, we'll concentrate on a univariate model that predicts the percentage of protein in the samples.  
 
 ```{r}
 meats <- meats %>% select(-water, -fat)
 ```
 
-We define a sparse PLS model by setting the `predictor_prop` argument to a value less than one. This allows the model fitting process to set certain loadings to zero via regularization. 
+We define a sparse PLS model by setting the `predictor_prop` argument to a value less than one. This allows the model fitting process to set certain loadings to zero via regularization.
+
+Note that only some of the available PLS engines support regularization. Other PLS engines will omit the `predictor_prop` argument to fit a traditional PLS model.
 
 ```{r}
 sparse_pls_spec <- 
