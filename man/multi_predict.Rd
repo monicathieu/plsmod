@@ -5,6 +5,7 @@
 \alias{multi_predict._mixo_spls}
 \alias{multi_predict._mixo_plsda}
 \alias{multi_predict._mixo_splsda}
+\alias{multi_predict._mvr}
 \title{Model predictions across many sub-models}
 \usage{
 \method{multi_predict}{`_mixo_pls`}(object, new_data, num_comp = NULL, type = NULL, ...)
@@ -14,6 +15,8 @@
 \method{multi_predict}{`_mixo_plsda`}(object, new_data, num_comp = NULL, type = NULL, ...)
 
 \method{multi_predict}{`_mixo_splsda`}(object, new_data, num_comp = NULL, type = NULL, ...)
+
+\method{multi_predict}{`_mvr`}(object, new_data, num_comp = NULL, ...)
 }
 \arguments{
 \item{object}{An object of class \code{model_fit}}

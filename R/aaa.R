@@ -85,6 +85,7 @@ s3_register <- function(generic, class, method = NULL) {
   s3_register("parsnip::multi_predict", "_mixo_plsda")
   s3_register("parsnip::multi_predict", "_mixo_spls")
   s3_register("parsnip::multi_predict", "_mixo_splsda")
+  s3_register("parsnip::multi_predict", "_mvr")
 }
 
 # nocov end

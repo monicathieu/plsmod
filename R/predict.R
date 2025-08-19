@@ -1,24 +1,12 @@
 # Post-processor for when only the largest value of ncomp is being used. This
 # works for regression predictions (uni- or multivariate)
 single_numeric_preds <- function(results, object) {
-  tmp_pred <- results$predict
-  n <- dim(tmp_pred)[1]
-  p <- dim(tmp_pred)[2]
-  ncomp <- dim(tmp_pred)[3]
-  tmp_pred <- tmp_pred[, , ncomp]
-  if (p == 1) {
-    res <- tibble::tibble(.pred = unname(tmp_pred))
-  } else {
-    res <- tibble::as_tibble(tmp_pred)
-    names(res) <- paste0(".pred_", names(res))
+  if (object$spec$engine == "mixOmics") {
+    tmp_pred <- results$predict
+  } else if (object$spec$engine == "plsr") {
+    tmp_pred <- results
   }
-  res
-}
 
-# Alternate version for plsr because it returns predictions directly
-# not in a list with other components bundled in
-single_numeric_preds_plsr <- function(results, object) {
-  tmp_pred <- results
   n <- dim(tmp_pred)[1]
   p <- dim(tmp_pred)[2]
   ncomp <- dim(tmp_pred)[3]
@@ -62,7 +50,9 @@ single_prob_preds <- function(results, object) {
 
 multi_numeric_preds <- function(object, new_data, comps = NULL) {
   tmp_pred <- predict(object$fit, new_data, dist = "mahalanobis.dist")
-  tmp_pred <- tmp_pred$predict
+  if (object$spec$engine == "mixOmics") {
+    tmp_pred <- tmp_pred$predict
+  }
 
   n <- dim(tmp_pred)[1]
   p <- dim(tmp_pred)[2]
@@ -225,3 +215,35 @@ multi_predict._mixo_plsda <- multi_predict._mixo_pls
 #' @export
 #' @rdname multi_predict
 multi_predict._mixo_splsda <- multi_predict._mixo_pls
+
+#' @export
+#' @rdname multi_predict
+multi_predict._mvr <-
+  function(object, new_data, num_comp = NULL, ...) {
+    if (any(names(rlang::enquos(...)) == "newdata")) {
+      rlang::abort("Did you mean to use `new_data` instead of `newdata`?")
+    }
+
+    ## -------------------------------------------------------------------------
+    ## prepare data
+
+    new_data <- parsnip::prepare_data(object, new_data)
+
+    # preprocess data
+    if (!is.null(object$spec$method$pred$prob$pre)) {
+      new_data <- object$spec$method$pred$prob$pre(new_data, object)
+    }
+
+    ## -------------------------------------------------------------------------
+
+
+    if (is.null(num_comp)) {
+      num_comp <- object$fit$sncomp
+    }
+    num_comp <- sort(unique(num_comp))
+
+    # plsr (here at least) only supports numeric regression, don't need to handle classification
+    res <- multi_numeric_preds(object, new_data, num_comp)
+
+    res
+  }

@@ -210,7 +210,7 @@ make_pls_plsr <- function() {
     type = "numeric",
     value = list(
       pre = NULL,
-      post = single_numeric_preds_plsr,
+      post = single_numeric_preds,
       func = c(fun = "predict"),
       args =
         list(
